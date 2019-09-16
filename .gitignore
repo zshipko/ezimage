@@ -1,3 +1,5 @@
 *.a
+*.o
 target
 Cargo.lock
+
