@@ -1,6 +1,7 @@
 build:
+	rm -f ./libezimageio_impl.a
 	cargo build --release
-	mv target/release/libezimageio_impl.a .
+	cp target/release/libezimageio_impl.a ./libezimageio_impl.a
 
 clean:
 	cargo clean

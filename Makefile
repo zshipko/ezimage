@@ -15,6 +15,11 @@ install:
 uninstall:
 	rm -f $(dest)/lib/libezimageio.a $(dest)/include/ezimageio.h
 
+.PHONY: test
+test: build
+	$(CC) -o test/test test/test.c -L. -lezimageio -lm -lpthread -ldl
+	@time test/test test/big.png
+
 clean:
 	cd src/$(backend) && $(MAKE) clean
 	rm -f ./libezimageio.a ./ezimageio.pc
