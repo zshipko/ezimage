@@ -30,6 +30,8 @@ $ make backend=$BACKEND
 
 There are only 4 functions defined by `libezimage`: `ezimage_imread` for reading image, `ezimage_imwrite` for writing images, `ezimage_alloc` for allocating new image data and `ezimage_free` for freeing image data.
 
+`ezimage_alloc` and `ezimage_free` are implemented by each backend depending on their memory needs. For example, in Rust, this will return a pointer to `Vec` data, which will later be dropped when calling `ezimage_free`, but in most cases they simply wrap `malloc`/`free`.
+
 - `ezimage_imread(filename, requested_type, output_size) -> pixels`
   * The `requested_type` is a suggestions, however the output data type may differ. Always check the output type to ensure it is the type you're expecting
   * Returns `NULL` when the image can't be read
