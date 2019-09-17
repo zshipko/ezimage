@@ -7,12 +7,18 @@ A bare-bones C image I/O library with pluggable backends
 - `rust`
   * Based on [image](https://github.com/PistonDevelopers/image)
   * Default if `cargo` can be found
+  * Read: **PNG**, **JPEG**, **TIFF**, **GIF**, **HDR**, **TGA**, **BMP**
+  * Write: **PNG**, **JPEG**, **TIFF**, **HDR**, **GIF**
 - `stb_image`
   * Based on [stb_image](https://github.com/nothings/stb)
   * Default when `cargo` cannot be found
+  * Read: **PNG**, **JPEG**, **GIF**, **HDR**, **TGA**, **BMP**, **PSD**
+  * Write: **PNG**, **JPEG**, **HDR**
 - `openimageio`
   * Based on [OpenImageIO](https://github.com/OpenImageIO/oiio)
   * `libOpenImageIO` must be installed (for example, `libopenimageio-dev` on Debian based distros)
+  * Read: **PNG**, **JPEG**, **TIFF**, **GIF**, **HDR**, **TGA**, **BMP**, **RAW**, **OpenEXR**, **DPX**, **PSD**, ...
+  * Write: **PNG**, **JPEG**, **TIFF**, **GIF**, **HDR**, **TGA**, **BMP**, **OpenEXR**, **DPX**, ...
 
 ## Building
 
