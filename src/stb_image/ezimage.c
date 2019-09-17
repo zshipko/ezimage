@@ -5,6 +5,10 @@
 
 void *ezimage_imread(const char *path, const ezimage_type *t,
                      ezimage_shape *shape) {
+  if (path == NULL || shape == NULL) {
+    return NULL;
+  }
+
   int w, h, c;
   void *data = NULL;
 
@@ -53,6 +57,10 @@ static const char *get_ext(const char *filename) {
 
 bool ezimage_imwrite(const char *path, const void *data,
                      const ezimage_shape *shape) {
+  if (path == NULL || data == NULL || shape == NULL) {
+    return false;
+  }
+
   const char *ext = get_ext(path);
   if (shape->t.kind == EZIMAGEIO_UINT && shape->t.bits == 8) {
     if (strncasecmp(ext, "png", 3) == 0) {
@@ -73,6 +81,22 @@ bool ezimage_imwrite(const char *path, const void *data,
   return false;
 }
 
+void *ezimage_alloc(const ezimage_shape *shape) {
+  if (shape == NULL) {
+    return NULL;
+  }
+
+  size_t b = ezimage_shape_num_bytes(shape);
+  void *p = STBI_MALLOC(b);
+  bzero(p, b);
+  return p;
+}
+
 void ezimage_free(void *data, const ezimage_shape *shape) {
+  if (data == NULL) {
+    return;
+  }
+
+  (void)shape;
   stbi_image_free(data);
 }

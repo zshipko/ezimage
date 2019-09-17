@@ -28,7 +28,7 @@ $ make backend=$BACKEND
 
 ## API
 
-There are only 3 functions defined by `libezimage`: `ezimage_imread` for reading image, `ezimage_imwrite` for writing images and `ezimage_free` for freeing image data.
+There are only 4 functions defined by `libezimage`: `ezimage_imread` for reading image, `ezimage_imwrite` for writing images, `ezimage_alloc` for allocating new image data and `ezimage_free` for freeing image data.
 
 - `ezimage_imread(filename, requested_type, output_size) -> pixels`
   * The `requested_type` is a suggestions, however the output data type may differ. Always check the output type to ensure it is the type you're expecting
@@ -36,6 +36,8 @@ There are only 3 functions defined by `libezimage`: `ezimage_imread` for reading
   * The pixel data returned by `ezimage_imread` should be freed using `ezimage_free`
 - `ezimage_imwrite(filename, data, image_size) -> bool`
   * Returns `true` when the image has been written, `false` otherwise
+- `ezimage_alloc(shape)`
+  * Returns new image data for the corresponding shape
 - `ezimage_free(data, image_size)`
   * Free image data allocated by `ezimage_imread`
 

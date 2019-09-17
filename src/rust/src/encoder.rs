@@ -4,6 +4,10 @@ use crate::*;
 
 #[no_mangle]
 pub extern "C" fn ezimage_imwrite(path: *const i8, data: *const std::ffi::c_void, shape: *const Shape) -> bool {
+    if path.is_null() || data.is_null() || shape.is_null() {
+        return false
+    }
+
     let filename = unsafe { CStr::from_ptr(path) };
     let filename = match filename.to_str() {
         Ok(x) => x,

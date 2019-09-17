@@ -68,6 +68,10 @@ static bool getType(const ezimage_type *t, TypeDesc::BASETYPE *dest) {
 
 extern "C" void *ezimage_imread(const char *filename, const ezimage_type *t,
                                 ezimage_shape *shape) {
+  if (filename == NULL || shape == NULL) {
+    return NULL;
+  }
+
   TypeDesc::BASETYPE base;
   if (t != NULL) {
     if (!getType(t, &base)) {
@@ -95,7 +99,7 @@ extern "C" void *ezimage_imread(const char *filename, const ezimage_type *t,
     shape->t.kind = EZIMAGEIO_UINT;
   }
 
-  void *data = ::operator new(ezimage_shape_num_bytes(shape));
+  void *data = malloc(ezimage_shape_num_bytes(shape));
   if (data == NULL) {
     input->close();
     return NULL;
@@ -109,15 +113,17 @@ extern "C" void *ezimage_imread(const char *filename, const ezimage_type *t,
 
 extern "C" bool ezimage_imwrite(const char *filename, const void *data,
                                 const ezimage_shape *shape) {
+  if (filename == NULL || data == NULL || shape == NULL) {
+    return false;
+  }
+
   TypeDesc::BASETYPE base;
   if (!getType(&shape->t, &base)) {
-    puts("A");
     return false;
   }
 
   std::unique_ptr<ImageOutput> out = ImageOutput::create(filename);
   if (!out) {
-    puts("B");
     return false;
   }
 
@@ -128,11 +134,22 @@ extern "C" bool ezimage_imwrite(const char *filename, const void *data,
   return written;
 }
 
+void *ezimage_alloc(const ezimage_shape *shape) {
+  if (shape == NULL) {
+    return NULL;
+  }
+
+  size_t b = ezimage_shape_num_bytes(shape);
+  void *p = malloc(b);
+  bzero(p, b);
+  return p;
+}
+
 extern "C" void ezimage_free(void *data, const ezimage_shape *shape) {
   if (data == NULL) {
     return;
   }
 
   (void)shape;
-  ::operator delete(data);
+  free(data);
 }

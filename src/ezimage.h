@@ -33,6 +33,8 @@ void *ezimage_imread(const char *filename, const ezimage_type *t,
                      ezimage_shape *shape);
 bool ezimage_imwrite(const char *filename, const void *data,
                      const ezimage_shape *shape);
+
+void *ezimage_alloc(const ezimage_shape *shape);
 void ezimage_free(void *data, const ezimage_shape *shape);
 
 static size_t ezimage_shape_size(const ezimage_shape *shape) {

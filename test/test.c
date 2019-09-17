@@ -18,6 +18,13 @@ int main(int argc, char *argv[]) {
 
   assert(ezimage_imwrite("out.jpg", data, &shape));
   ezimage_free(data, &shape);
+
+  data = ezimage_alloc(&shape);
+
+  for (size_t i = 0; i < ezimage_shape_num_bytes(&shape); i++) {
+    assert(((uint8_t *)data)[i] == 0);
+  }
+  ezimage_free(data, &shape);
   putchar('\n');
   return 0;
 }

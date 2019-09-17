@@ -20,8 +20,8 @@ fn image_decode<'a, D: ImageDecoder<'a>>(decoder: D, width: *mut u64, height: *m
 
     let data = match decoder.read_image() {
         Ok(mut data) => {
-            let ptr = data.as_mut_ptr();
             data.shrink_to_fit();
+            let ptr = data.as_mut_ptr();
             mem::forget(data);
             ptr as *mut std::ffi::c_void
         }
@@ -81,6 +81,10 @@ decoder!(image_read_tga, image::tga::TGADecoder::new);
 
 #[no_mangle]
 pub extern "C" fn ezimage_imread(path: *const i8, _t: *const Type, shape: *mut Shape) -> *mut std::ffi::c_void {
+    if path.is_null() || shape.is_null() {
+        return ptr::null_mut();
+    }
+
     let filename = unsafe { CStr::from_ptr(path) };
     let filename = match filename.to_str() {
         Ok(x) => x,
@@ -125,14 +129,4 @@ pub extern "C" fn ezimage_imread(path: *const i8, _t: *const Type, shape: *mut S
     }
 }
 
-#[no_mangle]
-pub extern "C" fn ezimage_free(data: *mut u8, shape: *const Shape) {
-    if data.is_null() {
-        return;
-    }
 
-    let shape = unsafe { &*shape };
-    let len = (shape.width * shape.height * shape.channels as u64 * shape.t.bits as u64) as usize;
-    let vec = unsafe { Vec::from_raw_parts(data, len, len) };
-    mem::drop(vec);
-}
