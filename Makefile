@@ -13,7 +13,7 @@ build:
 	mkdir -p $(build)/lib $(build)/include
 	cd src/$(backend) && $(MAKE)
 	cp src/$(backend)/libezimage_impl.a $(build)/lib/libezimage.a
-	cp src/ezimage.h $(build)/include/libezimage.h
+	cp src/ezimage.h $(build)/include/ezimage.h
 	cp src/$(backend)/ezimage.pc ./ezimage.pc
 
 install:
