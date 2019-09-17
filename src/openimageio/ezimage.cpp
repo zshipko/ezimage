@@ -7,7 +7,7 @@ using namespace OIIO;
 static bool getType(const ezimage_type *t, TypeDesc::BASETYPE *dest) {
   TypeDesc::BASETYPE base;
   switch (t->kind) {
-  case EZIMAGEIO_INT:
+  case EZIMAGE_INT:
     switch (t->bits) {
     case 8:
       base = TypeDesc::INT8;
@@ -25,7 +25,7 @@ static bool getType(const ezimage_type *t, TypeDesc::BASETYPE *dest) {
       return false;
     }
     break;
-  case EZIMAGEIO_UINT:
+  case EZIMAGE_UINT:
     switch (t->bits) {
     case 8:
       base = TypeDesc::UINT8;
@@ -43,7 +43,7 @@ static bool getType(const ezimage_type *t, TypeDesc::BASETYPE *dest) {
       return false;
     }
     break;
-  case EZIMAGEIO_FLOAT:
+  case EZIMAGE_FLOAT:
     switch (t->bits) {
     case 16:
       base = TypeDesc::HALF;
@@ -96,7 +96,7 @@ extern "C" void *ezimage_imread(const char *filename, const ezimage_type *t,
     shape->t.kind = t->kind;
   } else {
     shape->t.bits = 8;
-    shape->t.kind = EZIMAGEIO_UINT;
+    shape->t.kind = EZIMAGE_UINT;
   }
 
   void *data = malloc(ezimage_shape_num_bytes(shape));

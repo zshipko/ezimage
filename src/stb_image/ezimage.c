@@ -17,25 +17,25 @@ void *ezimage_imread(const char *path, const ezimage_type *t,
   }
 
   switch (t->kind) {
-  case EZIMAGEIO_UINT:
+  case EZIMAGE_UINT:
     if (t->bits == 16) {
       data = stbi_load_16(path, &w, &h, &c, 0);
       shape->t.bits = 16;
-      shape->t.kind = EZIMAGEIO_UINT;
+      shape->t.kind = EZIMAGE_UINT;
     }
     break;
-  case EZIMAGEIO_FLOAT:
+  case EZIMAGE_FLOAT:
     if (t->bits == 32) {
       data = stbi_loadf(path, &w, &h, &c, 0);
       shape->t.bits = 32;
-      shape->t.kind = EZIMAGEIO_FLOAT;
+      shape->t.kind = EZIMAGE_FLOAT;
     }
     break;
   default:
   read_uint:
     data = stbi_load(path, &w, &h, &c, 0);
     shape->t.bits = 8;
-    shape->t.kind = EZIMAGEIO_UINT;
+    shape->t.kind = EZIMAGE_UINT;
   }
 
   if (data == NULL) {
@@ -62,7 +62,7 @@ bool ezimage_imwrite(const char *path, const void *data,
   }
 
   const char *ext = get_ext(path);
-  if (shape->t.kind == EZIMAGEIO_UINT && shape->t.bits == 8) {
+  if (shape->t.kind == EZIMAGE_UINT && shape->t.bits == 8) {
     if (strncasecmp(ext, "png", 3) == 0) {
       return stbi_write_png(path, shape->width, shape->height, shape->channels,
                             data, shape->width * shape->channels) != 0;
@@ -71,7 +71,7 @@ bool ezimage_imwrite(const char *path, const void *data,
       return stbi_write_jpg(path, shape->width, shape->height, shape->channels,
                             data, 95) != 0;
     }
-  } else if (shape->t.kind == EZIMAGEIO_FLOAT && shape->t.bits == 32) {
+  } else if (shape->t.kind == EZIMAGE_FLOAT && shape->t.bits == 32) {
     if (strncasecmp(ext, "hdr", 3) == 0) {
       return stbi_write_hdr(path, shape->width, shape->height, shape->channels,
                             data) != 0;

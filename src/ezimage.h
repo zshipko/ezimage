@@ -10,9 +10,9 @@ extern "C" {
 #include <stdlib.h>
 
 typedef enum {
-  EZIMAGEIO_INT,
-  EZIMAGEIO_UINT,
-  EZIMAGEIO_FLOAT,
+  EZIMAGE_INT,
+  EZIMAGE_UINT,
+  EZIMAGE_FLOAT,
 } ezimage_kind;
 
 typedef struct {
@@ -25,9 +25,6 @@ typedef struct {
   uint64_t width, height;
   uint8_t channels;
 } ezimage_shape;
-
-// void *ezimage_data_alloc(ezimage_type *shape);
-// void ezimage_data_free(void *data, ezimage_type *shape);
 
 void *ezimage_imread(const char *filename, const ezimage_type *t,
                      ezimage_shape *shape);
