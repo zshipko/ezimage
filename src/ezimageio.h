@@ -41,7 +41,7 @@ static size_t ezimageio_shape_size(const ezimageio_shape *shape) {
 
 __attribute__((unused)) static size_t
 ezimageio_shape_num_bytes(const ezimageio_shape *shape) {
-  return ezimageio_shape_size(shape) * (size_t)shape->t.bits / 8;
+  return ezimageio_shape_size(shape) * ((size_t)shape->t.bits / 8);
 }
 
 #ifdef __cplusplus

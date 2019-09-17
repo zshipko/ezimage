@@ -3,13 +3,13 @@
 
 #include <string.h>
 
-void *ezimageio_imread(const char *path, ezimageio_type *t,
+void *ezimageio_imread(const char *path, const ezimageio_type *t,
                        ezimageio_shape *shape) {
   int w, h, c;
   void *data = NULL;
 
   if (!t) {
-    goto x;
+    goto read_uint;
   }
 
   switch (t->kind) {
@@ -19,14 +19,16 @@ void *ezimageio_imread(const char *path, ezimageio_type *t,
       shape->t.bits = 16;
       shape->t.kind = EZIMAGEIO_UINT;
     }
+    break;
   case EZIMAGEIO_FLOAT:
     if (t->bits == 32) {
       data = stbi_loadf(path, &w, &h, &c, 0);
       shape->t.bits = 32;
       shape->t.kind = EZIMAGEIO_FLOAT;
     }
+    break;
   default:
-  x:
+  read_uint:
     data = stbi_load(path, &w, &h, &c, 0);
     shape->t.bits = 8;
     shape->t.kind = EZIMAGEIO_UINT;
@@ -49,7 +51,8 @@ static const char *get_ext(const char *filename) {
   return dot + 1;
 }
 
-bool ezimageio_imwrite(const char *path, void *data, ezimageio_shape *shape) {
+bool ezimageio_imwrite(const char *path, const void *data,
+                       const ezimageio_shape *shape) {
   const char *ext = get_ext(path);
   if (shape->t.kind == EZIMAGEIO_UINT && shape->t.bits == 8) {
     if (strncasecmp(ext, "png", 3) == 0) {
@@ -70,6 +73,6 @@ bool ezimageio_imwrite(const char *path, void *data, ezimageio_shape *shape) {
   return false;
 }
 
-void ezimageio_free(void *data, ezimageio_shape *shape) {
+void ezimageio_free(void *data, const ezimageio_shape *shape) {
   stbi_image_free(data);
 }

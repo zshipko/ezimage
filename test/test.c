@@ -1,4 +1,5 @@
 #include "../src/ezimageio.h"
+#include <assert.h>
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
@@ -12,8 +13,10 @@ int main(int argc, char *argv[]) {
     return 2;
   }
 
-  printf("%lux%lux%d\n", shape.width, shape.height, (int)shape.channels);
+  printf("%lux%lux%d : %d_%d\n", shape.width, shape.height, (int)shape.channels,
+         shape.t.bits, shape.t.kind);
 
+  assert(ezimageio_imwrite("out.jpg", data, &shape));
   ezimageio_free(data, &shape);
   return 0;
 }

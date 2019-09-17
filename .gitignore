@@ -2,4 +2,8 @@
 *.o
 target
 Cargo.lock
-
+*.pc
+build
+test/test
+out.jpg
+test/big.png

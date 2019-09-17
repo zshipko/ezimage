@@ -2,4 +2,4 @@ Name: ezimageio
 Description: Bare-bones image I/O library
 Version: 0.1
 Cflags: -I@dest/include
-Libs: -L@dest/lib -lezimageio -lm -lpthread -ldl
+Libs: -L@dest/lib -lezimageio -lOpenImageIO -lstdc++

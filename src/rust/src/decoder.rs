@@ -59,6 +59,8 @@ macro_rules! decoder {
                 None => return ptr::null_mut(),
             };
 
+            let f = std::io::BufReader::new(f);
+
             let decoder = match $dec(f) {
                 Ok(d) => d,
                 Err(_) => return ptr::null_mut(),
@@ -72,6 +74,10 @@ macro_rules! decoder {
 decoder!(image_read_tiff, image::tiff::TIFFDecoder::new);
 decoder!(image_read_jpeg, image::jpeg::JPEGDecoder::new);
 decoder!(image_read_png, image::png::PNGDecoder::new);
+decoder!(image_read_hdr, image::hdr::HDRAdapter::new);
+decoder!(image_read_gif, image::gif::Decoder::new);
+decoder!(image_read_bmp, image::bmp::BMPDecoder::new);
+decoder!(image_read_tga, image::tga::TGADecoder::new);
 
 #[no_mangle]
 pub extern "C" fn ezimageio_imread(path: *const i8, _t: *const Type, shape: *mut Shape) -> *mut std::ffi::c_void {
@@ -93,22 +99,30 @@ pub extern "C" fn ezimageio_imread(path: *const i8, _t: *const Type, shape: *mut
         Some("tiff") | Some("TIFF") | Some("tif") | Some("TIF") => image_read_tiff(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
         Some("jpeg") | Some("JPEG") | Some("jpg") | Some("JPG") => image_read_jpeg(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
         Some("png") | Some("PNG")  => image_read_png(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
+        Some("gif") | Some("GIF")  => image_read_gif(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
+        Some("hdr") | Some("HDR") => image_read_hdr(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
+        Some("bmp") | Some("BMP") => image_read_bmp(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
+        Some("tga") | Some("TGA") => image_read_tga(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
         _ => {
-            let mut r = image_read_png(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits);
-            if r.is_null() {
-               r = image_read_jpeg(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits);
-               if r.is_null() {
-                    r = image_read_tiff(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits);
-               }
+            let mut r = std::ptr::null_mut();
+
+            let attempt = &[
+                image_read_png,
+                image_read_jpeg,
+                image_read_tiff,
+                image_read_hdr,
+                image_read_bmp,
+                image_read_tga,
+            ];
+            for f in attempt {
+                r = f(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits);
+                if !r.is_null(){
+                    break
+                }
             }
             return r;
         }
     }
-}
-
-#[no_mangle]
-pub extern "C" fn ezimageio_imwrite(_path: *const i8, _data: *const std::ffi::c_void, _shape: *const Shape) -> bool {
-    return false;
 }
 
 #[no_mangle]
