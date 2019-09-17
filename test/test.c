@@ -18,5 +18,6 @@ int main(int argc, char *argv[]) {
 
   assert(ezimageio_imwrite("out.jpg", data, &shape));
   ezimageio_free(data, &shape);
+  putchar('\n');
   return 0;
 }

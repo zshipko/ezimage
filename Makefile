@@ -34,7 +34,12 @@ test/big.png:
 test: test/big.png build
 	@cat ezimageio.pc | sed -e 's|@dest|build|g' > ezimageio-test.pc
 	@PKG_CONFIG_LIBDIR="." $(CC) -o test/test test/test.c -L. `pkg-config --cflags --libs ezimageio-test`
-	@time test/test test/big.png
+	@time test/test test/big.png && echo
+
+test-all:
+	$(MAKE) backend=stb_image test
+	$(MAKE) backend=rust test
+	$(MAKE) backend=openimageio test
 
 clean:
 	cd src/$(backend) && $(MAKE) clean
