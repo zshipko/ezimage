@@ -1,5 +1,5 @@
 [package]
-name = "ezimageio_impl"
+name = "ezimage_impl"
 version = "0.1.0"
 authors = ["Zach Shipko <zachshipko@gmail.com>"]
 edition = "2018"

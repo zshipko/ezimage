@@ -1,10 +1,10 @@
-#include "../ezimageio.h"
+#include "../ezimage.h"
 
 #include <OpenImageIO/imageio.h>
 
 using namespace OIIO;
 
-static bool getType(const ezimageio_type *t, TypeDesc::BASETYPE *dest) {
+static bool getType(const ezimage_type *t, TypeDesc::BASETYPE *dest) {
   TypeDesc::BASETYPE base;
   switch (t->kind) {
   case EZIMAGEIO_INT:
@@ -66,8 +66,8 @@ static bool getType(const ezimageio_type *t, TypeDesc::BASETYPE *dest) {
   return true;
 }
 
-extern "C" void *ezimageio_imread(const char *filename, const ezimageio_type *t,
-                                  ezimageio_shape *shape) {
+extern "C" void *ezimage_imread(const char *filename, const ezimage_type *t,
+                                ezimage_shape *shape) {
   TypeDesc::BASETYPE base;
   if (t != NULL) {
     if (!getType(t, &base)) {
@@ -95,7 +95,7 @@ extern "C" void *ezimageio_imread(const char *filename, const ezimageio_type *t,
     shape->t.kind = EZIMAGEIO_UINT;
   }
 
-  void *data = ::operator new(ezimageio_shape_num_bytes(shape));
+  void *data = ::operator new(ezimage_shape_num_bytes(shape));
   if (data == NULL) {
     input->close();
     return NULL;
@@ -107,8 +107,8 @@ extern "C" void *ezimageio_imread(const char *filename, const ezimageio_type *t,
   return data;
 }
 
-extern "C" bool ezimageio_imwrite(const char *filename, const void *data,
-                                  const ezimageio_shape *shape) {
+extern "C" bool ezimage_imwrite(const char *filename, const void *data,
+                                const ezimage_shape *shape) {
   TypeDesc::BASETYPE base;
   if (!getType(&shape->t, &base)) {
     puts("A");
@@ -128,7 +128,7 @@ extern "C" bool ezimageio_imwrite(const char *filename, const void *data,
   return written;
 }
 
-extern "C" void ezimageio_free(void *data, const ezimageio_shape *shape) {
+extern "C" void ezimage_free(void *data, const ezimage_shape *shape) {
   if (data == NULL) {
     return;
   }

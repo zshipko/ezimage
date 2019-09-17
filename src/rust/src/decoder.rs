@@ -80,7 +80,7 @@ decoder!(image_read_bmp, image::bmp::BMPDecoder::new);
 decoder!(image_read_tga, image::tga::TGADecoder::new);
 
 #[no_mangle]
-pub extern "C" fn ezimageio_imread(path: *const i8, _t: *const Type, shape: *mut Shape) -> *mut std::ffi::c_void {
+pub extern "C" fn ezimage_imread(path: *const i8, _t: *const Type, shape: *mut Shape) -> *mut std::ffi::c_void {
     let filename = unsafe { CStr::from_ptr(path) };
     let filename = match filename.to_str() {
         Ok(x) => x,
@@ -126,7 +126,7 @@ pub extern "C" fn ezimageio_imread(path: *const i8, _t: *const Type, shape: *mut
 }
 
 #[no_mangle]
-pub extern "C" fn ezimageio_free(data: *mut u8, shape: *const Shape) {
+pub extern "C" fn ezimage_free(data: *mut u8, shape: *const Shape) {
     if data.is_null() {
         return;
     }

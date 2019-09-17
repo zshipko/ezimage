@@ -12,28 +12,28 @@ endif
 build:
 	mkdir -p $(build)/lib $(build)/include
 	cd src/$(backend) && $(MAKE)
-	cp src/$(backend)/libezimageio_impl.a $(build)/lib/libezimageio.a
-	cp src/ezimageio.h $(build)/include/libezimageio.h
-	cp src/$(backend)/ezimageio.pc ./ezimageio.pc
+	cp src/$(backend)/libezimage_impl.a $(build)/lib/libezimage.a
+	cp src/ezimage.h $(build)/include/libezimage.h
+	cp src/$(backend)/ezimage.pc ./ezimage.pc
 
 install:
 	mkdir -p $(dest)/include $(dest)/lib/pkgconfig
-	install $(build)/lib/libezimageio.a $(dest)/lib
-	install $(build)/include/ezimageio.h $(dest)/include
-	@cat ezimageio.pc | sed -e 's|@dest|'"$(dest)"'|g' > $(dest)/lib/pkgconfig/ezimageio.pc
+	install $(build)/lib/libezimage.a $(dest)/lib
+	install $(build)/include/ezimage.h $(dest)/include
+	@cat ezimage.pc | sed -e 's|@dest|'"$(dest)"'|g' > $(dest)/lib/pkgconfig/ezimage.pc
 
 uninstall:
-	rm -f $(dest)/lib/libezimageio.a \
-		  $(dest)/include/ezimageio.h \
-		  $(dest)/lib/pkgconfig/ezimageio.pc
+	rm -f $(dest)/lib/libezimage.a \
+		  $(dest)/include/ezimage.h \
+		  $(dest)/lib/pkgconfig/ezimage.pc
 
 test/big.png:
 	curl https://eoimages.gsfc.nasa.gov/images/imagerecords/74000/74393/world.topo.200407.3x5400x2700.png > test/big.png
 
 .PHONY: test
 test: test/big.png build
-	@cat ezimageio.pc | sed -e 's|@dest|build|g' > ezimageio-test.pc
-	@PKG_CONFIG_LIBDIR="." $(CC) -o test/test test/test.c -L. `pkg-config --cflags --libs ezimageio-test`
+	@cat ezimage.pc | sed -e 's|@dest|build|g' > ezimage-test.pc
+	@PKG_CONFIG_LIBDIR="." $(CC) -o test/test test/test.c -L. `pkg-config --cflags --libs ezimage-test`
 	@time test/test test/big.png && echo
 
 test-all:
@@ -43,4 +43,4 @@ test-all:
 
 clean:
 	cd src/$(backend) && $(MAKE) clean
-	rm -rf $(build)/lib/libezimageio.a $(build)/include/ezimage.h ./*.pc out.jpg
+	rm -rf $(build)/lib/libezimage.a $(build)/include/ezimage.h ./*.pc out.jpg

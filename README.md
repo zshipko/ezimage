@@ -1,6 +1,6 @@
-# ezimageio - bare-bones C image I/O
+# ezimage - bare-bones C image I/O
 
-The goal of `ezimageio` is to provide a simple interface for reading and writing images while allowing for different types of images to be supported by selecting a different backend.
+The goal of `ezimage` is to provide a simple interface for reading and writing images while allowing for different types of images to be supported by selecting a different backend.
 
 ## Backends
 
@@ -28,13 +28,15 @@ $ make backend=$BACKEND
 
 ## API
 
-- `ezimageio_imread(filename, requested_type, output_size) -> pixels`
+There are only 3 functions defined by `libezimage`: `ezimage_imread` for reading image, `ezimage_imwrite` for writing images and `ezimage_free` for freeing image data.
+
+- `ezimage_imread(filename, requested_type, output_size) -> pixels`
   * The `requested_type` is a suggestions, however the output data type may differ. Always check the output type to ensure it is the type you're expecting
   * Returns `NULL` when the image can't be read
-  * The pixel data returned by `ezimageio_imread` should be freed using `ezimageio_free`
-- `ezimageio_imwrite(filename, data, image_size) -> bool`
+  * The pixel data returned by `ezimage_imread` should be freed using `ezimage_free`
+- `ezimage_imwrite(filename, data, image_size) -> bool`
   * Returns `true` when the image has been written, `false` otherwise
-- `ezimageio_free(data, image_size)`
-  * Free image data allocated by `ezimageio_imread`
+- `ezimage_free(data, image_size)`
+  * Free image data allocated by `ezimage_imread`
 
-See `src/ezimageio.h`
+See `src/ezimage.h`

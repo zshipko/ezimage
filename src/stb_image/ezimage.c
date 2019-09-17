@@ -1,10 +1,10 @@
-#include "../ezimageio.h"
+#include "../ezimage.h"
 #include "stb.c"
 
 #include <string.h>
 
-void *ezimageio_imread(const char *path, const ezimageio_type *t,
-                       ezimageio_shape *shape) {
+void *ezimage_imread(const char *path, const ezimage_type *t,
+                     ezimage_shape *shape) {
   int w, h, c;
   void *data = NULL;
 
@@ -51,8 +51,8 @@ static const char *get_ext(const char *filename) {
   return dot + 1;
 }
 
-bool ezimageio_imwrite(const char *path, const void *data,
-                       const ezimageio_shape *shape) {
+bool ezimage_imwrite(const char *path, const void *data,
+                     const ezimage_shape *shape) {
   const char *ext = get_ext(path);
   if (shape->t.kind == EZIMAGEIO_UINT && shape->t.bits == 8) {
     if (strncasecmp(ext, "png", 3) == 0) {
@@ -73,6 +73,6 @@ bool ezimageio_imwrite(const char *path, const void *data,
   return false;
 }
 
-void ezimageio_free(void *data, const ezimageio_shape *shape) {
+void ezimage_free(void *data, const ezimage_shape *shape) {
   stbi_image_free(data);
 }
