@@ -6,6 +6,7 @@
 void *ezimage_imread(const char *path, const ezimage_type *t,
                      ezimage_shape *shape) {
   if (path == NULL || shape == NULL) {
+    puts("A");
     return NULL;
   }
 
@@ -39,6 +40,7 @@ void *ezimage_imread(const char *path, const ezimage_type *t,
   }
 
   if (data == NULL) {
+    puts("B");
     return NULL;
   }
 

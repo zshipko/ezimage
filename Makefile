@@ -32,8 +32,8 @@ test/big.png:
 
 .PHONY: test
 test: test/big.png build
-	@cat ezimage.pc | sed -e 's|@dest|build|g' > ezimage-test.pc
-	@PKG_CONFIG_LIBDIR="." $(CC) -o test/test test/test.c -L. `pkg-config --cflags --libs ezimage-test`
+	cat ezimage.pc | sed -e 's|@dest|./build|g' > ezimage-test.pc
+	$(CC) -o test/test test/test.c -L. `PKG_CONFIG_PATH="${PWD}" pkg-config --cflags --libs ezimage-test`
 	@time test/test test/big.png && echo
 
 test-all:
