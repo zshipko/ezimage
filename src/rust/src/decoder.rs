@@ -2,7 +2,7 @@ use std::ffi::CStr;
 use std::fs::File;
 use std::{ptr};
 
-use image::ImageDecoder;
+use image::{ImageDecoder};
 
 use crate::*;
 
@@ -11,6 +11,7 @@ fn image_decode<'a, D: ImageDecoder<'a>>(decoder: D, width: *mut u64, height: *m
     let ch = color.channel_count();
     let b = color.bits_per_pixel() / ch as u16;
     let (w, h) = decoder.dimensions();
+
     unsafe {
         *width = w;
         *height = h;

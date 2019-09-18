@@ -5,7 +5,7 @@ The goal of `ezimage` is to provide a simple interface for reading and writing i
 ## Backends
 
 - `rust`
-  * Based on [image](https://github.com/PistonDevelopers/image)
+  * Based on [image](https://github.com/image-rs/image)
   * Default if `cargo` can be found
   * Read: **PNG**, **JPEG**, **TIFF**, **GIF**, **HDR**, **TGA**, **BMP**
   * Write: **PNG**, **JPEG**, **TIFF(8-bit only)**, **HDR**, **GIF**
