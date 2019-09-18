@@ -32,7 +32,7 @@ bool ezimage_imwrite(const char *filename, const void *data,
                      const ezimage_shape *shape);
 
 void *ezimage_alloc(const ezimage_shape *shape);
-void ezimage_free(void *data, const ezimage_shape *shape);
+void ezimage_free(void *data);
 
 static size_t ezimage_shape_size(const ezimage_shape *shape) {
   return (size_t)shape->width * (size_t)shape->height * (size_t)shape->channels;

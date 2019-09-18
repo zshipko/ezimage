@@ -2,6 +2,14 @@
 
 #include <OpenImageIO/imageio.h>
 
+#ifndef EZIMAGE_MALLOC
+#define EZIMAGE_MALLOC malloc
+#endif
+
+#ifndef EZIMAGE_FREE
+#define EZIMAGE_FREE free
+#endif
+
 using namespace OIIO;
 
 static bool getType(const ezimage_type *t, TypeDesc::BASETYPE *dest) {
@@ -99,7 +107,7 @@ extern "C" void *ezimage_imread(const char *filename, const ezimage_type *t,
     shape->t.kind = EZIMAGE_UINT;
   }
 
-  void *data = malloc(ezimage_shape_num_bytes(shape));
+  void *data = ezimage_alloc(shape);
   if (data == NULL) {
     input->close();
     return NULL;
@@ -140,16 +148,15 @@ void *ezimage_alloc(const ezimage_shape *shape) {
   }
 
   size_t b = ezimage_shape_num_bytes(shape);
-  void *p = malloc(b);
+  void *p = EZIMAGE_MALLOC(b);
   bzero(p, b);
   return p;
 }
 
-extern "C" void ezimage_free(void *data, const ezimage_shape *shape) {
+extern "C" void ezimage_free(void *data) {
   if (data == NULL) {
     return;
   }
 
-  (void)shape;
-  free(data);
+  EZIMAGE_FREE(data);
 }

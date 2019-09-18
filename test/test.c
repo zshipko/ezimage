@@ -17,14 +17,14 @@ int main(int argc, char *argv[]) {
          shape.t.bits, shape.t.kind);
 
   assert(ezimage_imwrite("out.jpg", data, &shape));
-  ezimage_free(data, &shape);
+  ezimage_free(data);
 
   data = ezimage_alloc(&shape);
 
   for (size_t i = 0; i < ezimage_shape_num_bytes(&shape); i++) {
     assert(((uint8_t *)data)[i] == 0);
   }
-  ezimage_free(data, &shape);
+  ezimage_free(data);
   putchar('\n');
   return 0;
 }

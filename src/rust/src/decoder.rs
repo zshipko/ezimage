@@ -1,6 +1,6 @@
 use std::ffi::CStr;
 use std::fs::File;
-use std::{mem, ptr};
+use std::{ptr};
 
 use image::ImageDecoder;
 
@@ -19,11 +19,9 @@ fn image_decode<'a, D: ImageDecoder<'a>>(decoder: D, width: *mut u64, height: *m
     }
 
     let data = match decoder.read_image() {
-        Ok(mut data) => {
-            data.shrink_to_fit();
-            let ptr = data.as_mut_ptr();
-            mem::forget(data);
-            ptr as *mut std::ffi::c_void
+        Ok(data) => {
+            let data = data.into_boxed_slice();
+            Box::into_raw(data) as *mut std::ffi::c_void
         }
         Err(_) => {
             return ptr::null_mut();
@@ -99,12 +97,17 @@ pub extern "C" fn ezimage_imread(path: *const i8, _t: *const Type, shape: *mut S
 
     let shape = unsafe { &mut *shape };
 
+    shape.t.kind = Kind::UInt;
+
     match ext {
         Some("tiff") | Some("TIFF") | Some("tif") | Some("TIF") => image_read_tiff(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
         Some("jpeg") | Some("JPEG") | Some("jpg") | Some("JPG") => image_read_jpeg(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
         Some("png") | Some("PNG")  => image_read_png(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
         Some("gif") | Some("GIF")  => image_read_gif(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
-        Some("hdr") | Some("HDR") => image_read_hdr(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
+        Some("hdr") | Some("HDR") => {
+            shape.t.kind = Kind::Float;
+            image_read_hdr(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits)
+        },
         Some("bmp") | Some("BMP") => image_read_bmp(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
         Some("tga") | Some("TGA") => image_read_tga(path, &mut shape.width, &mut shape.height, &mut shape.channels, &mut shape.t.bits),
         _ => {

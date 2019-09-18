@@ -94,11 +94,10 @@ void *ezimage_alloc(const ezimage_shape *shape) {
   return p;
 }
 
-void ezimage_free(void *data, const ezimage_shape *shape) {
+void ezimage_free(void *data) {
   if (data == NULL) {
     return;
   }
 
-  (void)shape;
   stbi_image_free(data);
 }
