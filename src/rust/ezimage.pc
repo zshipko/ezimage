@@ -1,0 +1,5 @@
+Name: ezimage
+Description: Easy image IO
+Version: 0.1
+Libs: -L@dest/lib -lezimage -lpthread -lm -ldl
+Cflags: -I@dest/include
