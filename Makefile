@@ -28,8 +28,8 @@ test/big.png:
 .PHONY: test
 test: test/big.png build
 	cat ezimage.pc | sed -e 's|@dest|./build|g' > ezimage-test.pc
-	$(CC) -o test/test test/test.c -L. `PKG_CONFIG_PATH="${PWD}" pkg-config --cflags --libs ezimage-test`
-	@time test/test test/big.png && echo
+	$(CC) -o test/test test/test.c -L/usr/local/lib -Lbuild/lib `PKG_CONFIG_PATH="${PWD}" pkg-config --cflags --libs ezimage-test`
+	@time LD_LIBRARY_PATH=./build/lib test/test test/big.png && echo
 
 test-all:
 	$(MAKE) backend=default test
