@@ -5,7 +5,8 @@ The goal of `ezimage` is to provide a simple interface for reading and writing i
 ## Backends
 
 - `stb_image`
-  * Based on [stb_image](https://github.com/nothings/stb), TinyEXR and libTIFF
+  * Requires `libtiff`
+  * Based on [stb_image](https://github.com/nothings/stb), [TinyEXR](https://github.com/syoyo/tinyexr) and libtiff
   * Read: **PNG**, **JPEG**, **GIF**, **HDR**, **TGA**, **BMP**, **PSD**, **EXR**, **TIFF**
   * Write: **PNG**, **JPEG**, **HDR**, **EXR**, **TIFF**
 - `rust`
