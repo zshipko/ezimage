@@ -1,12 +1,6 @@
 dest?=/usr/local
 build?=./build
-
-# Default to `rust` backend if cargo is available
-ifeq (, $(shell which cargo))
-	backend?=stb_image
-else
-	backend?=rust
-endif
+backend?=default
 
 .PHONY: build
 build:
@@ -37,7 +31,7 @@ test: test/big.png build
 	@time test/test test/big.png && echo
 
 test-all:
-	$(MAKE) backend=stb_image test
+	$(MAKE) backend=default test
 	$(MAKE) backend=rust test
 	$(MAKE) backend=openimageio test
 
