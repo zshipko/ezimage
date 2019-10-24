@@ -1,5 +1,5 @@
 build:
-	$(CXX) -c -o exr.o exr.cpp
+	$(CXX) -std=c++11 -c -o exr.o exr.cpp
 	$(CC) -c -o ezimage_impl.o ezimage.c
 	$(AR) rcs libezimage_impl.a ezimage_impl.o exr.o
 
