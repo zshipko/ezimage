@@ -1,11 +1,12 @@
 dest?=/usr/local
 build?=./build
 backend?=default
+PIC?=-fPIC
 
 .PHONY: build
 build:
 	mkdir -p $(build)/lib $(build)/include
-	cd src/$(backend) && $(MAKE)
+	cd src/$(backend) && $(MAKE) CFLAGS=$(PIC)
 	cp src/$(backend)/libezimage_impl.a $(build)/lib/libezimage.a
 	cp src/ezimage.h $(build)/include/ezimage.h
 	cp src/$(backend)/ezimage.pc ./ezimage.pc
