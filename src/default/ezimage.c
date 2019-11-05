@@ -156,12 +156,19 @@ void *ezimage_imread(const char *path, const ezimage_type *t,
       shape->t.bits = 16;
       shape->t.kind = EZIMAGE_UINT;
     }
+    if (data == NULL) {
+      goto read_float;
+    }
     break;
   case EZIMAGE_FLOAT:
+  read_float:
     if (t->bits == 32) {
       data = stbi_loadf(path, &w, &h, &c, 0);
       shape->t.bits = 32;
       shape->t.kind = EZIMAGE_FLOAT;
+    }
+    if (data == NULL) {
+      goto read_uint;
     }
     break;
   default:
