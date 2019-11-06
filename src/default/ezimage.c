@@ -213,7 +213,10 @@ bool ezimage_imwrite(const char *path, const void *data,
   }
 
   const char *ext = get_ext(path);
-  if (shape->t.kind == EZIMAGE_UINT && shape->t.bits == 8) {
+
+  if (strncasecmp(ext, "tif", 3) == 0 || strncasecmp(ext, "tiff", 4) == 0) {
+    return saveTIFF(path, data, shape);
+  } else if (shape->t.kind == EZIMAGE_UINT && shape->t.bits == 8) {
     if (strncasecmp(ext, "png", 3) == 0) {
       return stbi_write_png(path, shape->width, shape->height, shape->channels,
                             data, shape->width * shape->channels) != 0;
@@ -235,9 +238,6 @@ bool ezimage_imwrite(const char *path, const void *data,
       return SaveEXR(data, shape->width, shape->height, shape->channels, 1,
                      path, NULL) >= 0;
     }
-  } else if (strncasecmp(ext, "tif", 3) == 0 ||
-             strncasecmp(ext, "tiff", 4) == 0) {
-    return saveTIFF(path, data, shape);
   }
 
   return false;
