@@ -191,6 +191,7 @@ void *ezimage_imread(const char *path, const ezimage_type *t,
     }
     shape->t.bits = 32;
     shape->t.kind = EZIMAGE_FLOAT;
+    c = 4;
   }
 
   shape->width = w;
