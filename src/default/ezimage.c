@@ -79,8 +79,8 @@ static void *openTIFF(const char *filename, ezimage_shape *shape) {
   }
 
   void *data = NULL;
-  uint32_t w, h;
-  uint16_t depth, channels, fmt;
+  uint32_t w = 0, h = 0;
+  uint16_t depth = 0, channels = 0, fmt = 0;
 
   TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &w);
   TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &h);
@@ -88,9 +88,9 @@ static void *openTIFF(const char *filename, ezimage_shape *shape) {
   TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &channels);
   TIFFGetField(tif, TIFFTAG_SAMPLEFORMAT, &fmt);
 
-  shape->t.bits = depth;
   shape->width = w;
   shape->height = h;
+  shape->t.bits = depth;
   shape->channels = channels;
 
   if (fmt == SAMPLEFORMAT_IEEEFP) {
