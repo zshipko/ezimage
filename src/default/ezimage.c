@@ -8,6 +8,9 @@
 #include <string.h>
 #include <tiffio.h>
 
+int SaveEXR16(const void *data, int width, int height, int components,
+              const char *outfilename, const char **err);
+
 static void tiffErrorHandler(const char *module, const char *fmt, va_list ap) {
   // ignore
 }
@@ -236,8 +239,8 @@ bool ezimage_imwrite(const char *path, const void *data,
     }
   } else if (shape->t.kind == EZIMAGE_FLOAT && shape->t.bits == 16) {
     if (strncasecmp(ext, "exr", 3) == 0) {
-      return SaveEXR(data, shape->width, shape->height, shape->channels, 1,
-                     path, NULL) >= 0;
+      return SaveEXR16(data, shape->width, shape->height, shape->channels, path,
+                       NULL) >= 0;
     }
   }
 
