@@ -13,7 +13,7 @@ jobs:
             toolchain: nightly
             override: true
     - name: Dependencies
-      run: brew update && brew install libtiff openimageio
+      run: brew update && brew install libtiff openimageio pkg-config
     - name: Default
       run: make test
     - name: Rust
