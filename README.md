@@ -25,6 +25,14 @@ The goal of `ezimage` is to provide a simple interface for reading and writing i
 $ make backend=$BACKEND
 ```
 
+To install:
+
+```shell
+$ sudo make install
+```
+
+You can use pkg-config to include `ezimage` in your project: `pkg-config --cflags --libs ezimage`
+
 ## API
 
 There are only 4 functions defined by `libezimage`: `ezimage_imread` for reading image, `ezimage_imwrite` for writing images, `ezimage_alloc` for allocating new image data and `ezimage_free` for freeing image data.
