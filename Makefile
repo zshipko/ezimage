@@ -26,7 +26,12 @@ test/big.png:
 	curl https://eoimages.gsfc.nasa.gov/images/imagerecords/74000/74393/world.topo.200407.3x5400x2700.png > test/big.png
 
 .PHONY: test
-test: test/big.png build
+test: test/big.png
+	mkdir -p $(build)/lib $(build)/include
+	cd src/$(backend) && $(MAKE) CFLAGS=$(PIC)
+	cp src/$(backend)/libezimage_impl.a $(build)/lib/libezimage.a
+	cp src/ezimage.h $(build)/include/ezimage.h
+	cp src/$(backend)/ezimage.pc ./ezimage.pc
 	cat ezimage.pc | sed -e 's|@dest|./build|g' > ezimage-test.pc
 	$(CC) -o test/test test/test.c -L/usr/local/lib -Lbuild/lib `PKG_CONFIG_PATH="${PWD}" pkg-config --cflags --libs ezimage-test`
 	@LD_LIBRARY_PATH=./build/lib test/test test/big.png && echo
