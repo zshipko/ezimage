@@ -2,6 +2,13 @@ dest?=/usr/local
 build?=./build
 backend?=default
 PIC?=-fPIC
+CXXLIB?=-lstdc++
+UNAME_S:=$(shell uname -s)
+
+ifeq ($(UNAME_S),Darwin)
+	CXXLIB=-lc++
+	LIBC++=yes
+endif
 
 .PHONY: build
 build:
@@ -15,7 +22,7 @@ install:
 	mkdir -p $(dest)/include $(dest)/lib/pkgconfig
 	install $(build)/lib/libezimage.a $(dest)/lib
 	install $(build)/include/ezimage.h $(dest)/include
-	@cat ezimage.pc | sed -e 's|@dest|'"$(dest)"'|g' > $(dest)/lib/pkgconfig/ezimage.pc
+	@cat ezimage.pc | sed -e 's|@dest|'"$(dest)"'|g' -e 's|@CXX|'"$(CXXLIB)"'|g' > $(dest)/lib/pkgconfig/ezimage.pc
 
 uninstall:
 	rm -f $(dest)/lib/libezimage.a \
@@ -27,7 +34,7 @@ test/big.png:
 
 .PHONY: test
 test: test/big.png build
-	cat ezimage.pc | sed -e 's|@dest|./build|g' > ezimage-test.pc
+	cat ezimage.pc | sed -e 's|@dest|./build|g' -e 's|@CXX|'"$(CXXLIB)"'|g' > ezimage-test.pc
 	$(CC) -o test/test test/test.c -Lbuild/lib `PKG_CONFIG_PATH="${PWD}" pkg-config --cflags --libs ezimage-test`
 	@LD_LIBRARY_PATH=./build/lib test/test test/big.png && echo
 

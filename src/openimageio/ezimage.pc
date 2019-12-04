@@ -1,5 +1,5 @@
 Name: ezimage
 Description: Easy image IO
 Version: 0.1
-Libs: -L@dest/lib -lezimage -lOpenImageIO -lstdc++ -lm
+Libs: -L@dest/lib -lezimage -lOpenImageIO -lm @CXX
 Cflags: -I@dest/include
