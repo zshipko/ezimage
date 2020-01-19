@@ -7,13 +7,12 @@ UNAME_S:=$(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	CXXLIB=-lc++
-	LIBC++=yes
 endif
 
 .PHONY: build
 build:
 	mkdir -p $(build)/lib $(build)/include
-	cd src/$(backend) && $(MAKE) CFLAGS=$(PIC)
+	cd src/$(backend) && $(MAKE) CXXLIB=$(CXXLIB) CC=$(CC) CXX=$(CXX) CFLAGS=$(PIC)
 	cp src/$(backend)/libezimage_impl.a $(build)/lib/libezimage.a
 	cp src/ezimage.h $(build)/include/ezimage.h
 	cp src/$(backend)/ezimage.pc ./ezimage.pc
@@ -35,8 +34,8 @@ test/big.png:
 .PHONY: test
 test: test/big.png build
 	cat ezimage.pc | sed -e 's|@dest|./build|g' -e 's|@CXX|'"$(CXXLIB)"'|g' > ezimage-test.pc
-	$(CC) -o test/test test/test.c -Lbuild/lib `PKG_CONFIG_PATH="${PWD}" pkg-config --cflags --libs ezimage-test`
-	@LD_LIBRARY_PATH=./build/lib test/test test/big.png && echo
+	$(CXX) -x c -o test/test test/test.c -Lbuild/lib `PKG_CONFIG_PATH="${PWD}" pkg-config --cflags --libs ezimage-test`
+	@LD_LIBRARY_PATH="./build/lib:$$LD_LIBRARY_PATH" test/test test/big.png && echo
 
 test-all:
 	$(MAKE) backend=default test
