@@ -9,10 +9,6 @@ The goal of `ezimage` is to provide a simple interface for reading and writing i
   * Based on [stb_image](https://github.com/nothings/stb), [TinyEXR](https://github.com/syoyo/tinyexr) and libtiff
   * Read: **PNG**, **JPEG**, **GIF**, **HDR**, **TGA**, **BMP**, **PSD**, **EXR**, **TIFF**
   * Write: **PNG**, **JPEG**, **HDR**, **EXR**, **TIFF**
-- `rust`
-  * Based on [image](https://github.com/image-rs/image)
-  * Read: **PNG**, **JPEG**, **TIFF**, **GIF**, **HDR**, **TGA**, **BMP**
-  * Write: **PNG**, **JPEG**, **TIFF(8-bit only)**, **HDR**, **GIF**
 - `openimageio`
   * Based on [OpenImageIO](https://github.com/OpenImageIO/oiio)
   * `libOpenImageIO` must be installed (for example, `libopenimageio-dev` on Debian based distros)

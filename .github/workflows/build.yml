@@ -16,7 +16,5 @@ jobs:
       run: sudo apt-get install libtiff-dev libopenimageio-dev
     - name: Default
       run: make test
-    - name: Rust
-      run: make test backend=rust
     #- name: OpenImageIO
       #run: make test backend=openimageio

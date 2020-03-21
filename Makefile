@@ -39,7 +39,6 @@ test: test/big.png build
 
 test-all:
 	$(MAKE) backend=default test
-	$(MAKE) backend=rust test
 	$(MAKE) backend=openimageio test
 
 clean:
