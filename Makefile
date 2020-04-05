@@ -2,17 +2,11 @@ dest?=/usr/local
 build?=./build
 backend?=default
 PIC?=-fPIC
-CXXLIB?=-lstdc++
-UNAME_S:=$(shell uname -s)
-
-ifeq ($(UNAME_S),Darwin)
-	CXXLIB=-lc++
-endif
 
 .PHONY: build
 build:
 	mkdir -p $(build)/lib $(build)/include
-	cd src/$(backend) && $(MAKE) CXXLIB=$(CXXLIB) CC=$(CC) CXX=$(CXX) CFLAGS=$(PIC)
+	cd src/$(backend) && $(MAKE) CXXLIB=$(CXXLIB) CC="$(CC)" CXX="$(CXX)" CFLAGS="$(PIC)"
 	cp src/$(backend)/libezimage_impl.a $(build)/lib/libezimage.a
 	cp src/ezimage.h $(build)/include/ezimage.h
 	cp src/$(backend)/ezimage.pc ./ezimage.pc
