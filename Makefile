@@ -37,4 +37,4 @@ test-all:
 
 clean:
 	cd src/$(backend) && $(MAKE) clean
-	rm -rf $(build)/lib/libezimage.a $(build)/include/ezimage.h ./*.pc out.jpg
+	rm -rf $(build) ezimage.pc out.jpg
