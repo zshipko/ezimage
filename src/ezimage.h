@@ -3,8 +3,6 @@
 extern "C" {
 #endif
 
-#define _DEFAULT_SOURCE
-
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
