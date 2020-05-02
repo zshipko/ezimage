@@ -13,8 +13,8 @@ jobs:
             toolchain: nightly
             override: true
     - name: Dependencies
-      run: sudo apt-get install libtiff-dev libopenimageio-dev
+      run: sudo apt-get update && sudo apt-get install libtiff-dev libopenimageio-dev
     - name: Default
       run: make test
-    #- name: OpenImageIO
-      #run: make test backend=openimageio
+    - name: OpenImageIO
+      run: make test backend=openimageio
