@@ -1,4 +1,5 @@
 #define TINYEXR_IMPLEMENTATION
+#define TINYEXR_USE_THREAD 1
 #include "tinyexr.h"
 
 extern "C" int SaveEXR16(const uint16_t *data, int width, int height,
