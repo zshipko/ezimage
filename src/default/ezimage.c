@@ -1,3 +1,5 @@
+#define _DEFAULT_SOURCE
+
 #include "../ezimage.h"
 #include "stb.c"
 #include "tinyexr.h"
